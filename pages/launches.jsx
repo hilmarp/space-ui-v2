@@ -68,14 +68,16 @@ const Launches = () => {
                         </Box>
                     </Box>
                 </Box>
-                <Box align='center' pad={'large'}>
-                    <Pagination
-                        numberItems={total}
-                        step={PER_PAGE}
-                        onChange={handlePaginationChange}
-                        page={currentPage}
-                    />
-                </Box>
+                {total > 0 && (
+                    <Box align='center' pad={'large'}>
+                        <Pagination
+                            numberItems={total}
+                            step={PER_PAGE}
+                            onChange={handlePaginationChange}
+                            page={currentPage}
+                        />
+                    </Box>
+                )}
                 {loading && (
                     <FullPageLoading />
                 )}

@@ -3,12 +3,22 @@ import PropTypes from 'prop-types';
 import { Box, Heading, Text, Anchor, Tip, Paragraph, ResponsiveContext } from 'grommet';
 import { Location, Cloud, Deploy, Calendar } from 'grommet-icons';
 import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
 import { differenceInDays } from 'date-fns';
 import { fToC, mphToMs, launchDateObj } from '../utils/helpers';
 import { AVAILABLE_LOGOS, COUNTRY_CODES, MAX_RELATIVE_DATE_DAYS } from '../utils/constants';
-import Logo from './logo';
-import Rocket from './rocket';
+import Loading from './loading';
 import Countdown from './countdown';
+
+const DynamicLogo = dynamic(
+    () => import('./logo'),
+    { ssr: false, loading: () => <Loading /> }
+);
+
+const DynamicRocket = dynamic(
+    () => import('./rocket'),
+    { ssr: false, loading: () => <Loading /> }
+);
 
 const FeaturedLaunch = ({ launch, linkToLaunch }) => {
     const [time, setTime] = useState('');
@@ -34,7 +44,7 @@ const FeaturedLaunch = ({ launch, linkToLaunch }) => {
                         onClick={(e) => { e.preventDefault(); router.push(`/launch/${launch.id}`); }}
                     >
                         <Box flex={false} height={'medium'}>
-                            <Rocket slug={launch.vehicle.slug} />
+                            <DynamicRocket slug={launch.vehicle.slug} />
                         </Box>
                     </Anchor>
                 ) : (
@@ -43,18 +53,18 @@ const FeaturedLaunch = ({ launch, linkToLaunch }) => {
                         onClick={(e) => { e.preventDefault(); router.push(`/launch/${launch.id}`); }}
                     >
                         <Box flex={false} height={'large'} width={screenSize === 'medium' ? 'medium' : 'large'}>
-                            <Rocket slug={launch.vehicle.slug} />
+                            <DynamicRocket slug={launch.vehicle.slug} />
                         </Box>
                     </Anchor>
                 )
             ) : (
                 screenSize === 'small' ? (
                     <Box flex={false} height={'medium'}>
-                        <Rocket slug={launch.vehicle.slug} />
+                        <DynamicRocket slug={launch.vehicle.slug} />
                     </Box>
                 ) : (
                     <Box flex={false} height={'large'} width={screenSize === 'medium' ? 'medium' : 'large'}>
-                        <Rocket slug={launch.vehicle.slug} />
+                        <DynamicRocket slug={launch.vehicle.slug} />
                     </Box>
                 )
             )}
@@ -73,7 +83,7 @@ const FeaturedLaunch = ({ launch, linkToLaunch }) => {
                 )}
                 <Box pad={{ bottom: 'small' }}>
                     {Object.values(AVAILABLE_LOGOS).includes(launch.provider.slug) ? (
-                        <Logo
+                        <DynamicLogo
                             slug={launch.provider.slug}
                             link={`/company/${launch.provider.id}`}
                             tooltip={launch.provider.name}

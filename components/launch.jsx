@@ -3,10 +3,20 @@ import PropTypes from 'prop-types';
 import { Box, Heading, Text, Tip, Anchor, ResponsiveContext } from 'grommet';
 import { Location, Cloud, Deploy, Calendar } from 'grommet-icons';
 import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
 import { fToC, mphToMs, launchDateObj } from '../utils/helpers';
 import { AVAILABLE_LOGOS, COUNTRY_CODES } from '../utils/constants';
-import Logo from './logo';
-import Rocket from './rocket';
+import Loading from './loading';
+
+const DynamicLogo = dynamic(
+    () => import('./logo'),
+    { ssr: false, loading: () => <Loading /> }
+);
+
+const DynamicRocket = dynamic(
+    () => import('./rocket'),
+    { ssr: false, loading: () => <Loading /> }
+);
 
 const Launch = ({ launch }) => {
     const [time, setTime] = useState('');
@@ -31,11 +41,11 @@ const Launch = ({ launch }) => {
             >
                 {screenSize === 'small' ? (
                     <Box flex={false} height={'small'}>
-                        <Rocket slug={launch.vehicle.slug} />
+                        <DynamicRocket slug={launch.vehicle.slug} />
                     </Box>
                 ) : (
                     <Box flex={false} height={'medium'} width={'medium'}>
-                        <Rocket slug={launch.vehicle.slug} />
+                        <DynamicRocket slug={launch.vehicle.slug} />
                     </Box>
                 )}
             </Anchor>
@@ -50,7 +60,7 @@ const Launch = ({ launch }) => {
                 </Heading>
                 <Box pad={{ bottom: 'small' }}>
                     {Object.values(AVAILABLE_LOGOS).includes(launch.provider.slug) ? (
-                        <Logo
+                        <DynamicLogo
                             slug={launch.provider.slug}
                             link={`/company/${launch.provider.id}`}
                             tooltip={launch.provider.name}

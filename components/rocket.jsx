@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Image } from 'grommet';
 import { random } from 'lodash';
@@ -15,45 +15,51 @@ const AVAILABLE_ROCKETS = {
 };
 
 const Rocket = ({ slug }) => {
+    const memoRnds = useMemo(() => {
+        return {
+            falcon9: random(1, TOTAL_FALCON9_ROCKETS),
+            soyuz: random(1, TOTAL_SOYUZ_ROCKETS),
+            falconHeavy: random(1, TOTAL_FALCON_HEAVY_ROCKETS),
+            misc: random(1, TOTAL_MISC_ROCKETS)
+        };
+    }, []);
+
     if (Object.values(AVAILABLE_ROCKETS).includes(slug)) {
         if (slug === AVAILABLE_ROCKETS.FALCON_9) {
-            const rnd = random(1, TOTAL_FALCON9_ROCKETS);
             return (
                 <Image
                     fit='cover'
-                    src={`/images/rockets/falcon9_${rnd}.jpg`}
+                    src={`/images/rockets/falcon9_${memoRnds.falcon9}.jpg`}
                     alt='Falcon 9'
                 />
             );
         }
 
         if (slug === AVAILABLE_ROCKETS.SOYUZ) {
-            const rnd = random(1, TOTAL_SOYUZ_ROCKETS);
             return (
                 <Image
                     fit='cover'
-                    src={`/images/rockets/soyuz_${rnd}.jpg`}
+                    src={`/images/rockets/soyuz_${memoRnds.soyuz}.jpg`}
                     alt='Soyuz'
                 />
             );
         }
 
         if (slug === AVAILABLE_ROCKETS.FALCON_HEAVY) {
-            const rnd = random(1, TOTAL_FALCON_HEAVY_ROCKETS);
             return (
                 <Image
                     fit='cover'
-                    src={`/images/rockets/falcon_heavy_${rnd}.jpg`}
+                    src={`/images/rockets/falcon_heavy_${memoRnds.falconHeavy}.jpg`}
                     alt='Falcon Heavy'
                 />
             );
         }
     }
-    const randomMisc = random(1, TOTAL_MISC_ROCKETS);
+
     return (
         <Image
             fit='cover'
-            src={`/images/rockets/misc${randomMisc}.jpg`}
+            src={`/images/rockets/misc${memoRnds.misc}.jpg`}
             alt='Rocket'
         />
     );

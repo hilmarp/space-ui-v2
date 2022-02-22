@@ -46,9 +46,9 @@ const Launch = ({ launch }) => {
         <>
             <Head>
                 <title>{getTitle(launch.name)}</title>
-                <meta name="description" content={`${launch.name} launch`} />
+                <meta name="description" content={launch.launch_description} />
                 <meta property="og:title" content={getTitle(launch.name)} />
-                <meta property="og:description" content={`${launch.name} launch`} />
+                <meta property="og:description" content={launch.launch_description} />
                 <meta property="og:url" content={getFullUrl(router.asPath)} />
             </Head>
             <Box pad={{ top: 'large', bottom: 'large', left: 'medium', right: 'medium' }}>
