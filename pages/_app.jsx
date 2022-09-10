@@ -7,17 +7,9 @@ export default function MyApp({ Component, pageProps }) {
         <>
             <Script
                 strategy="lazyOnload"
-                src="https://www.googletagmanager.com/gtag/js?id=G-ZQ54BHNNP4"
+                data-website-id="8f0a3bb4-226c-439b-b8bf-735767530b41"
+                src="https://umami.hilmarp.com/umami.js"
             />
-
-            <Script strategy="lazyOnload" id='gtag-script'>
-                {`
-                    window.dataLayer = window.dataLayer || [];
-                    function gtag(){dataLayer.push(arguments);}
-                    gtag('js', new Date());
-                    gtag('config', 'G-ZQ54BHNNP4');
-                `}
-            </Script>
             <Layout>
                 <Component {...pageProps} />
             </Layout>
